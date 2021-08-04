@@ -51,9 +51,6 @@ class TeamsActive {
         if ! WinActive("ahk_exe Teams.exe")
         {
             WinActivate, ahk_exe Teams.exe 
-            WinWaitActive, ahk_exe Teams.exe
-            WinMove, 2560, 1070
-            WinMove, 2560, 1080
             WinClose, ahk_exe Teams.exe
         }
     }
