@@ -4,37 +4,45 @@ SetWorkingDir %A_ScriptDir%
 
 #MaxThreadsPerHotkey, 5
 ^NumpadSub::
-if KeepRunning
-{
+if KeepRunning 
+{ ; In here stops the App
     KeepRunning := false
     return
 }
 KeepRunning := true
+
 TActive := new TeamsActive
-TActive.Start()
+TActive.Start() ; Calls the start function
+
 While, KeepRunning
-{
+{ ; Checks for stop call every 1 second
     sleep, 1000
 }
-TActive.Stop()
-KeepRunning := false 
 
+TActive.Stop() ; Calls the stop function
+
+KeepRunning := false ; Reset for next time
+
+^+NumpadSub::
+Reload ; Used to reload the script if an error occurs and when you do an edit
+Sleep 1000
+return
 
 class TeamsActive {
     __New() {
-        this.interval := 60000
-        this.timer := ObjBindMethod(this, "Runner")
+        this.interval := 60000 ; Runs every 1 minute
+        this.timer := ObjBindMethod(this, "Runner") ; Attaches the Runner to the timer
     }
     Start() {
         timer := this.timer
-        SetTimer % timer, % this.interval
+        SetTimer % timer, % this.interval ; Starts the timer
         ToolTip % "App started"
         Sleep, 2000
         Tooltip
     }
     Stop() {
         timer := this.timer
-        SetTimer % timer, Off
+        SetTimer % timer, Off ; Stops the timer
         ToolTip % "App stopped"
         Sleep, 2000
         Tooltip
